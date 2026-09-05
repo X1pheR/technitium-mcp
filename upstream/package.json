@@ -15,7 +15,7 @@
     "build-info": "node scripts/write-build-info.mjs"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.29.0",
+    "@modelcontextprotocol/sdk": "^1.30.0",
     "json5": "^2.2.3",
     "zod": "^3.25.76"
   }
