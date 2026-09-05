@@ -1,0 +1,439 @@
+{
+  "schema_version": 1,
+  "read_only_tool_count": 31,
+  "read_write_tool_count": 72,
+  "tools": [
+    {
+      "name": "dns_audit_list",
+      "mode": "read",
+      "destructive": false,
+      "description": "List recent local MCP audit.jsonl entries in reverse chronological order."
+    },
+    {
+      "name": "dns_audit_search",
+      "mode": "read",
+      "destructive": false,
+      "description": "Search local MCP audit.jsonl entries by text, tool, identity, action, request id, result, and date range."
+    },
+    {
+      "name": "dns_audit_read",
+      "mode": "read",
+      "destructive": false,
+      "description": "Read one local MCP audit.jsonl entry by request_id."
+    },
+    {
+      "name": "dns_health_check",
+      "mode": "read",
+      "destructive": false,
+      "description": "Summarize Technitium DNS health, version, uptime, forwarder config, and lifetime failure rate."
+    },
+    {
+      "name": "dns_get_stats",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get dashboard query statistics including top clients, domains, and blocked domains."
+    },
+    {
+      "name": "dns_check_update",
+      "mode": "read",
+      "destructive": false,
+      "description": "Check whether a newer Technitium DNS Server version is available."
+    },
+    {
+      "name": "dns_resolve",
+      "mode": "read",
+      "destructive": false,
+      "description": "Test DNS resolution through Technitium DNS Server without importing records."
+    },
+    {
+      "name": "dns_whoami",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get the current Technitium API token session identity and permissions."
+    },
+    {
+      "name": "dns_metrics_prometheus",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get Technitium lifetime metrics in Prometheus text format."
+    },
+    {
+      "name": "dns_list_sessions",
+      "mode": "read",
+      "destructive": false,
+      "description": "List active Technitium user and API-token sessions."
+    },
+    {
+      "name": "dns_delete_session",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete a Technitium user or API-token session by partial token. Requires confirm: true."
+    },
+    {
+      "name": "dns_list_zones",
+      "mode": "read",
+      "destructive": false,
+      "description": "List authoritative DNS zones configured in Technitium DNS Server."
+    },
+    {
+      "name": "dns_zone_options",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get zone DNSSEC, transfer, notify, dynamic update, and ACL options."
+    },
+    {
+      "name": "dns_export_zone",
+      "mode": "read",
+      "destructive": false,
+      "description": "Export an authoritative zone file in BIND format using Technitium's required GET endpoint with a single-use token."
+    },
+    {
+      "name": "dns_list_records",
+      "mode": "read",
+      "destructive": false,
+      "description": "List records for a domain or entire authoritative zone."
+    },
+    {
+      "name": "dns_create_zone",
+      "mode": "write",
+      "destructive": false,
+      "description": "Create a new authoritative DNS zone."
+    },
+    {
+      "name": "dns_delete_zone",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete an authoritative DNS zone. Requires confirm: true."
+    },
+    {
+      "name": "dns_enable_zone",
+      "mode": "write",
+      "destructive": false,
+      "description": "Enable a disabled authoritative zone."
+    },
+    {
+      "name": "dns_disable_zone",
+      "mode": "write",
+      "destructive": false,
+      "description": "Disable an authoritative zone while preserving records."
+    },
+    {
+      "name": "dns_set_zone_options",
+      "mode": "write",
+      "destructive": false,
+      "description": "Update zone notify, transfer ACL, query ACL, catalog, and dynamic update options."
+    },
+    {
+      "name": "dns_add_record",
+      "mode": "write",
+      "destructive": false,
+      "description": "Add a DNS record to an authoritative zone."
+    },
+    {
+      "name": "dns_update_record",
+      "mode": "write",
+      "destructive": false,
+      "description": "Update an existing DNS record by matching its current record fields and providing replacement fields."
+    },
+    {
+      "name": "dns_delete_record",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete a DNS record from an authoritative zone. Requires confirm: true."
+    },
+    {
+      "name": "dns_list_blocked",
+      "mode": "read",
+      "destructive": false,
+      "description": "List blocked domains hierarchically with drill-down support."
+    },
+    {
+      "name": "dns_list_allowed",
+      "mode": "read",
+      "destructive": false,
+      "description": "List allowed domains hierarchically with drill-down support."
+    },
+    {
+      "name": "dns_list_cache",
+      "mode": "read",
+      "destructive": false,
+      "description": "List DNS cache zones and records hierarchically with drill-down support."
+    },
+    {
+      "name": "dns_block_domain",
+      "mode": "write",
+      "destructive": false,
+      "description": "Add a domain to the custom blocked domains list."
+    },
+    {
+      "name": "dns_remove_blocked",
+      "mode": "write",
+      "destructive": false,
+      "description": "Remove a domain from the custom blocked domains list."
+    },
+    {
+      "name": "dns_flush_blocked",
+      "mode": "write",
+      "destructive": true,
+      "description": "Flush the entire custom blocked domains list. Requires confirm: true."
+    },
+    {
+      "name": "dns_allow_domain",
+      "mode": "write",
+      "destructive": false,
+      "description": "Add a domain to the allowed domains list to bypass block lists."
+    },
+    {
+      "name": "dns_remove_allowed",
+      "mode": "write",
+      "destructive": false,
+      "description": "Remove a domain from the allowed domains list."
+    },
+    {
+      "name": "dns_flush_allowed",
+      "mode": "write",
+      "destructive": true,
+      "description": "Flush the entire allowed domains list. Requires confirm: true."
+    },
+    {
+      "name": "dns_flush_cache",
+      "mode": "write",
+      "destructive": true,
+      "description": "Flush the complete DNS cache. Requires confirm: true."
+    },
+    {
+      "name": "dns_delete_cached",
+      "mode": "write",
+      "destructive": false,
+      "description": "Delete a specific domain from the DNS cache."
+    },
+    {
+      "name": "dns_get_settings",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get full Technitium DNS Server settings with sensitive fields sanitized."
+    },
+    {
+      "name": "dns_query_logs",
+      "mode": "read",
+      "destructive": false,
+      "description": "Query Technitium DNS app logs with filters for client IP, protocol, response type, rcode, qname, qtype, and qclass."
+    },
+    {
+      "name": "dns_list_apps",
+      "mode": "read",
+      "destructive": false,
+      "description": "List installed Technitium DNS apps."
+    },
+    {
+      "name": "dns_list_app_store",
+      "mode": "read",
+      "destructive": false,
+      "description": "List apps available from the Technitium DNS app store."
+    },
+    {
+      "name": "dns_get_app_config",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get configuration for an installed Technitium DNS app."
+    },
+    {
+      "name": "dns_dnssec_info",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get DNSSEC properties for a signed or unsigned primary zone."
+    },
+    {
+      "name": "dns_get_ds",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get DS records for a DNSSEC-signed primary zone."
+    },
+    {
+      "name": "dns_set_settings",
+      "mode": "write",
+      "destructive": false,
+      "description": "Update Technitium DNS Server settings by POSTing only the provided validated setting keys."
+    },
+    {
+      "name": "dns_update_blocklists",
+      "mode": "write",
+      "destructive": false,
+      "description": "Force immediate Technitium block-list update."
+    },
+    {
+      "name": "dns_temp_disable_blocking",
+      "mode": "write",
+      "destructive": false,
+      "description": "Temporarily disable Technitium blocking. Blocking auto re-enables after the requested minutes."
+    },
+    {
+      "name": "dns_install_app",
+      "mode": "write",
+      "destructive": false,
+      "description": "Install a Technitium DNS app by name and HTTPS app-store/download URL."
+    },
+    {
+      "name": "dns_uninstall_app",
+      "mode": "write",
+      "destructive": true,
+      "description": "Uninstall a Technitium DNS app. Requires confirm: true."
+    },
+    {
+      "name": "dns_dnssec_sign",
+      "mode": "write",
+      "destructive": false,
+      "description": "Sign a primary zone with DNSSEC using Technitium's DNSSEC signing API."
+    },
+    {
+      "name": "dns_dnssec_unsign",
+      "mode": "write",
+      "destructive": true,
+      "description": "Remove DNSSEC signing from a primary zone. Requires confirm: true."
+    },
+    {
+      "name": "dns_dnssec_rollover_key",
+      "mode": "write",
+      "destructive": true,
+      "description": "Rollover a DNSSEC DNSKEY by key tag. Requires confirm: true."
+    },
+    {
+      "name": "dns_list_tsig_keys",
+      "mode": "read",
+      "destructive": false,
+      "description": "List configured TSIG key names without exposing shared secrets."
+    },
+    {
+      "name": "dns_list_log_files",
+      "mode": "read",
+      "destructive": false,
+      "description": "List Technitium DNS server log files."
+    },
+    {
+      "name": "dns_read_log_file",
+      "mode": "read",
+      "destructive": false,
+      "description": "Read a Technitium DNS server log file, optionally limited by megabytes."
+    },
+    {
+      "name": "dns_export_query_logs",
+      "mode": "read",
+      "destructive": false,
+      "description": "Export filtered Technitium DNS app query logs as CSV text."
+    },
+    {
+      "name": "dns_backup_settings",
+      "mode": "write",
+      "destructive": false,
+      "description": "Create a Technitium settings backup ZIP in the configured local backup directory. Requires write scope because backups can contain secrets."
+    },
+    {
+      "name": "dns_restore_settings",
+      "mode": "write",
+      "destructive": true,
+      "description": "Restore Technitium settings from a ZIP in the configured backup/import directory. Requires confirm: true."
+    },
+    {
+      "name": "dns_download_update_app",
+      "mode": "write",
+      "destructive": false,
+      "description": "Download and update an installed Technitium DNS app from an HTTPS ZIP URL."
+    },
+    {
+      "name": "dns_update_app",
+      "mode": "write",
+      "destructive": false,
+      "description": "Manually update an installed Technitium DNS app from a ZIP in the configured local import directory."
+    },
+    {
+      "name": "dns_set_app_config",
+      "mode": "write",
+      "destructive": false,
+      "description": "Set an installed Technitium DNS app config object."
+    },
+    {
+      "name": "dns_delete_log_file",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete a Technitium DNS server log file. Requires confirm: true."
+    },
+    {
+      "name": "dns_delete_all_logs",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete all Technitium DNS server log files. Requires confirm: true."
+    },
+    {
+      "name": "dns_dhcp_list_leases",
+      "mode": "read",
+      "destructive": false,
+      "description": "List Technitium DHCP leases."
+    },
+    {
+      "name": "dns_dhcp_list_scopes",
+      "mode": "read",
+      "destructive": false,
+      "description": "List Technitium DHCP scopes."
+    },
+    {
+      "name": "dns_dhcp_get_scope",
+      "mode": "read",
+      "destructive": false,
+      "description": "Get a full Technitium DHCP scope configuration."
+    },
+    {
+      "name": "dns_dhcp_remove_lease",
+      "mode": "write",
+      "destructive": true,
+      "description": "Remove a DHCP dynamic or reserved lease. Requires confirm: true."
+    },
+    {
+      "name": "dns_dhcp_convert_lease_reserved",
+      "mode": "write",
+      "destructive": false,
+      "description": "Convert a DHCP dynamic lease to a reserved lease."
+    },
+    {
+      "name": "dns_dhcp_convert_lease_dynamic",
+      "mode": "write",
+      "destructive": false,
+      "description": "Convert a DHCP reserved lease to a dynamic lease."
+    },
+    {
+      "name": "dns_dhcp_set_scope",
+      "mode": "write",
+      "destructive": false,
+      "description": "Create or update a Technitium DHCP scope configuration."
+    },
+    {
+      "name": "dns_dhcp_add_reserved_lease",
+      "mode": "write",
+      "destructive": false,
+      "description": "Add a reserved DHCP lease to a Technitium DHCP scope."
+    },
+    {
+      "name": "dns_dhcp_remove_reserved_lease",
+      "mode": "write",
+      "destructive": true,
+      "description": "Remove a reserved DHCP lease from a Technitium DHCP scope. Requires confirm: true."
+    },
+    {
+      "name": "dns_dhcp_enable_scope",
+      "mode": "write",
+      "destructive": false,
+      "description": "Enable a Technitium DHCP scope."
+    },
+    {
+      "name": "dns_dhcp_disable_scope",
+      "mode": "write",
+      "destructive": false,
+      "description": "Disable a Technitium DHCP scope while preserving its configuration."
+    },
+    {
+      "name": "dns_dhcp_delete_scope",
+      "mode": "write",
+      "destructive": true,
+      "description": "Delete a Technitium DHCP scope permanently. Requires confirm: true."
+    }
+  ]
+}

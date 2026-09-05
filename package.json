@@ -1,0 +1,7 @@
+{
+  "name": "technitium-mcp-distribution",
+  "version": "0.0.1-x1pher.1",
+  "private": true,
+  "description": "Community-maintained container distribution of Slyke/mcp-technitium-dns",
+  "license": "MIT"
+}

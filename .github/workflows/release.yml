@@ -1,0 +1,113 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Existing release tag to publish"
+        required: true
+        type: string
+      expected_sha:
+        description: "Exact 40-character release source commit SHA"
+        required: true
+        type: string
+
+permissions: read-all
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+      packages: write
+      id-token: write
+      attestations: write
+    env:
+      RELEASE_TAG: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref_name }}
+      EXPECTED_SHA: ${{ github.event_name == 'workflow_dispatch' && inputs.expected_sha || github.sha }}
+      IMAGE: ghcr.io/x1pher/technitium-mcp
+    steps:
+      - name: Check out exact release source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_dispatch' && inputs.tag || github.ref }}
+
+      - name: Verify release source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "${{ github.event.repository.private }}" = "false"
+          [[ "$EXPECTED_SHA" =~ ^[0-9a-f]{40}$ ]]
+          version="$(node -p "require('./package.json').version")"
+          test "$RELEASE_TAG" = "v$version"
+          git fetch origin main
+          test "$(git rev-parse HEAD)" = "$EXPECTED_SHA"
+          test "$(git rev-list -n1 "$RELEASE_TAG")" = "$EXPECTED_SHA"
+          if [ "${{ github.event_name }}" = "push" ]; then
+            test "$EXPECTED_SHA" = "$(git rev-parse origin/main)"
+          else
+            git merge-base --is-ancestor "$EXPECTED_SHA" origin/main
+          fi
+
+      - name: Run canonical verifier
+        env:
+          VERIFY_REVISION: ${{ env.EXPECTED_SHA }}
+        run: ./scripts/verify.sh
+
+      - name: Authenticate to GHCR
+        env:
+          GHCR_TOKEN: ${{ github.token }}
+        run: echo "$GHCR_TOKEN" | docker login ghcr.io --username "$GITHUB_ACTOR" --password-stdin
+
+      - name: Build and publish image
+        id: image
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          short_sha="${EXPECTED_SHA::7}"
+          docker build --pull=false --build-arg VERSION="$version" --build-arg REVISION="$EXPECTED_SHA" -t "$IMAGE:$version" -t "$IMAGE:$version-$short_sha" .
+          docker push "$IMAGE:$version"
+          docker push "$IMAGE:$version-$short_sha"
+          digest="$(docker buildx imagetools inspect "$IMAGE:$version" | awk '/^Digest:/ {print $2; exit}')"
+          test -n "$digest"
+          echo "digest=$digest" >> "$GITHUB_OUTPUT"
+
+      - name: Attest published image
+        id: attest
+        uses: actions/attest@508db95dd578ae2727ebd6217d5ba78e4fbda05d # v4.2.1
+        with:
+          subject-name: ${{ env.IMAGE }}
+          subject-digest: ${{ steps.image.outputs.digest }}
+          push-to-registry: true
+          create-storage-record: false
+
+      - name: Create draft GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          IMAGE_DIGEST: ${{ steps.image.outputs.digest }}
+          ATTESTATION_URL: ${{ steps.attest.outputs.attestation-url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="$(node -p "require('./package.json').version")"
+          cat > release-notes.md <<NOTES
+          Community-maintained Technitium DNS MCP distribution.
+
+          - Distribution: \`$version\`
+          - Upstream commit: \`0b8f0478f4e759b17fe5d1410a72659fb3f61bfb\`
+          - Image: \`$IMAGE@$IMAGE_DIGEST\`
+          - Source: \`$EXPECTED_SHA\`
+          - Build provenance: $ATTESTATION_URL
+          NOTES
+          gh release create "$RELEASE_TAG" --draft --verify-tag --title "$RELEASE_TAG" --notes-file release-notes.md
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "$RELEASE_TAG" --draft=false
