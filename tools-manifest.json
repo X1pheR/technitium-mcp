@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "read_only_tool_count": 31,
-  "read_write_tool_count": 72,
+  "read_write_tool_count": 73,
   "tools": [
     {
       "name": "dns_audit_list",
@@ -62,6 +62,12 @@
       "mode": "read",
       "destructive": false,
       "description": "List active Technitium user and API-token sessions."
+    },
+    {
+      "name": "dns_create_api_token_file",
+      "mode": "write",
+      "destructive": true,
+      "description": "Create a non-expiring Technitium API token for an existing user and write its one-time value directly to a bounded mode-0600 server-side file. The token value is never returned. Requires confirm: true."
     },
     {
       "name": "dns_delete_session",

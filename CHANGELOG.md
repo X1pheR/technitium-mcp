@@ -2,6 +2,16 @@
 
 ## [Unreleased]
 
+## [0.0.1-x1pher.2] - 2026-09-07
+
+### Added
+- Added `dns_create_api_token_file`, a confirmation-gated write tool that creates a Technitium API token for an existing user and writes the one-time value only to a configured bounded server-side file with mode `0600`.
+- Added regression coverage for traversal rejection, no-overwrite semantics, token non-disclosure, duplicate-token retry safety, configurable secret-output storage, and the official `/api/admin/sessions/createToken` request contract.
+
+### Security
+- Token values created by `dns_create_api_token_file` never appear in MCP arguments, responses, or audit entries. The output file is reserved before the remote token is minted, and handled publication failures attempt to delete the newly created session before returning an error.
+- The distribution now carries an explicit reviewed security-integration source delta; `UPSTREAM.json` enumerates every changed upstream file and the verifier rejects any delta outside that list.
+
 ## [0.0.1-x1pher.1] - 2026-09-05
 
 ### Added

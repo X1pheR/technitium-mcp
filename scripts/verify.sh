@@ -35,11 +35,11 @@ assert m['commit']=='0b8f0478f4e759b17fe5d1410a72659fb3f61bfb'
 assert m['node_image']=='node@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32'
 assert m['runtime_hardening']['runtime_package_manager']=='removed'
 assert m['runtime_hardening']['runtime_user']=='node'
-assert m['application_source_delta'] is False
-assert m['downstream_delta']==['upstream/package-lock.json']
-assert m['distribution_version']==p['version']=='0.0.1-x1pher.1'
+assert m['application_source_delta'] is True
+assert m['distribution_model']=='upstream-source-snapshot-with-reviewed-security-integration-delta'
+assert m['distribution_version']==p['version']=='0.0.1-x1pher.2'
 assert m['tested_technitium_version']=='15.4.0'
-assert t['read_only_tool_count']==31 and t['read_write_tool_count']==72 and len(t['tools'])==72
+assert t['read_only_tool_count']==31 and t['read_write_tool_count']==73 and len(t['tools'])==73
 names=[x['name'] for x in t['tools']]
 assert len(names)==len(set(names))
 required=['Dockerfile','README.md','LICENSE','THIRD_PARTY_NOTICES.md','SECURITY.md','CONTRIBUTING.md','CHANGELOG.md','package.json','tools-manifest.json','docs/tools.md','scripts/verify.sh','.github/workflows/ci.yml','.github/workflows/release.yml','.github/dependabot.yml']
@@ -52,17 +52,20 @@ commit=$(python3 -c 'import json; print(json.load(open("UPSTREAM.json"))["commit
 git clone --quiet https://github.com/Slyke/mcp-technitium-dns.git "$tmp/base"
 git -C "$tmp/base" checkout --quiet "$commit"
 rm -rf "$tmp/base/.git"
-python3 - "$tmp/base" "$root/upstream" <<'PY'
+python3 - "$tmp/base" "$root/upstream" "$root/UPSTREAM.json" <<'PY'
+import json
 from pathlib import Path
 import sys
-base,cand=map(Path,sys.argv[1:]); paths=set()
+base,cand,manifest_path=map(Path,sys.argv[1:]); paths=set()
 for r in (base,cand): paths.update(p.relative_to(r).as_posix() for p in r.rglob('*') if p.is_file())
 changed=[]
 for rel in sorted(paths):
  a,b=base/rel,cand/rel
  if not a.exists() or not b.exists() or a.read_bytes()!=b.read_bytes(): changed.append(rel)
-if changed != ['package-lock.json']: raise SystemExit(f'ERROR: unexpected upstream application delta: {changed}')
-print('upstream_delta=package-lock-only')
+manifest=json.loads(manifest_path.read_text())
+expected=sorted(x.removeprefix('upstream/') for x in manifest['downstream_delta'] if x.startswith('upstream/'))
+if changed != expected: raise SystemExit(f'ERROR: unexpected upstream application delta: observed={changed} expected={expected}')
+print(f'upstream_delta=reviewed files={len(changed)}')
 PY
 
 cp -a "$root/upstream" "$tmp/work"
@@ -103,11 +106,11 @@ def norm(t):
  a=t.get('annotations') or {}
  return {'name':t['name'],'mode':None,'destructive':bool(a.get('destructiveHint',False)),'description':' '.join((t.get('description') or '').split())}
 manifest=m['tools']; expected={x['name']:x for x in manifest}; ro_names={x['name'] for x in ro}; rw_names={x['name'] for x in rw}
-assert len(ro)==m['read_only_tool_count']==31 and len(rw)==m['read_write_tool_count']==72
+assert len(ro)==m['read_only_tool_count']==31 and len(rw)==m['read_write_tool_count']==73
 assert ro_names=={x['name'] for x in manifest if x['mode']=='read'} and rw_names==set(expected)
 for t in rw:
  n=norm(t); e=expected[n['name']]; assert n['destructive']==e['destructive'] and n['description']==e['description'], n['name']
-print('live_tool_contract=ok ro=31 rw=72')
+print('live_tool_contract=ok ro=31 rw=73')
 PY
 
 docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$trivy_cache:/root/.cache/trivy" ghcr.io/aquasecurity/trivy:0.74.0 image --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --exit-code 1 --no-progress "$image"

@@ -2,10 +2,20 @@
   "repository": "https://github.com/Slyke/mcp-technitium-dns.git",
   "commit": "0b8f0478f4e759b17fe5d1410a72659fb3f61bfb",
   "node_image": "node@sha256:c610fcdfb1d5b4740dd70c284ed3cb16bb857e0f7166196e36a5501df7a3aa32",
-  "distribution_model": "upstream-source-snapshot-with-lockfile-only-security-delta",
-  "application_source_delta": false,
+  "distribution_model": "upstream-source-snapshot-with-reviewed-security-integration-delta",
+  "application_source_delta": true,
   "downstream_delta": [
-    "upstream/package-lock.json"
+    "upstream/package-lock.json",
+    "upstream/src/config.js",
+    "upstream/src/extraValidators.js",
+    "upstream/src/secretFile.js",
+    "upstream/src/technitiumClient.js",
+    "upstream/src/tools/administration.js",
+    "upstream/test/administrationToken.test.js",
+    "upstream/test/configExtras.test.js",
+    "upstream/test/extraValidators.test.js",
+    "upstream/test/secretFile.test.js",
+    "upstream/test/technitiumClient.test.js"
   ],
   "distribution_files": [
     "Dockerfile",
@@ -32,7 +42,7 @@
     "runtime_package_manager": "removed",
     "runtime_user": "node"
   },
-  "distribution_version": "0.0.1-x1pher.1",
+  "distribution_version": "0.0.1-x1pher.2",
   "tested_technitium_version": "15.4.0",
   "public_repository": "https://github.com/X1pheR/technitium-mcp",
   "container_repository": "ghcr.io/x1pher/technitium-mcp"

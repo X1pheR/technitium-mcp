@@ -24,6 +24,7 @@ This distribution verifies **31 tools in read-only mode** and **72 tools in read
 | `dns_whoami` | read | no | Get the current Technitium API token session identity and permissions. |
 | `dns_metrics_prometheus` | read | no | Get Technitium lifetime metrics in Prometheus text format. |
 | `dns_list_sessions` | read | no | List active Technitium user and API-token sessions. |
+| `dns_create_api_token_file` | write | yes | Create a non-expiring Technitium API token for an existing user and write its one-time value directly to a bounded mode-0600 server-side file. The token value is never returned. Requires confirm: true. |
 | `dns_delete_session` | write | yes | Delete a Technitium user or API-token session by partial token. Requires confirm: true. |
 | `dns_list_zones` | read | no | List authoritative DNS zones configured in Technitium DNS Server. |
 | `dns_zone_options` | read | no | Get zone DNSSEC, transfer, notify, dynamic update, and ACL options. |
