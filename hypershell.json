@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "name": "Technitium DNS MCP",
+  "category": "Infrastructure",
+  "kind": "mcp-server",
+  "upstream": {
+    "repository": "Slyke/mcp-technitium-dns",
+    "reason": "Provides the maintained hardened container and secret-safe integration boundary required by Hypershell."
+  }
+}
