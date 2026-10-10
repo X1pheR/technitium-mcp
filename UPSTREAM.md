@@ -23,8 +23,9 @@ This is a source-history-based initial logical patch inventory and must be recon
         "896ae28"
       ],
       "checked_on": "2026-10-10",
-      "issue": null,
-      "pr": null
+      "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/2",
+      "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/3",
+      "pr_state": "draft"
     },
     {
       "id": "TN-P02",
@@ -53,6 +54,40 @@ This is a source-history-based initial logical patch inventory and must be recon
   ]
 }
 ```
+
+## Verified upstream contribution state (2026-10-10)
+
+- The official `Slyke/mcp-technitium-dns:master` baseline is
+  `0b8f0478f4e759b17fe5d1410a72659fb3f61bfb`, which matches the
+  pinned upstream source snapshot in this distribution's `UPSTREAM.json`.
+  A missing upstream Git remote was corrected with a fetch-only upstream
+  URL and disabled upstream push.
+- **TN-P01** is now represented by upstream
+  [issue #2](https://github.com/Slyke/mcp-technitium-dns/issues/2) and
+  [draft PR #3](https://github.com/Slyke/mcp-technitium-dns/pull/3).
+  The exact upstream-native contribution head is
+  `19985c86abe25053b3653903c1a24616e25b8130`, based on the pinned
+  official master. The independent `X1pheR/mcp-technitium-dns` GitHub
+  fork exists **solely as a PR contribution transport**. It is not a new
+  Hypershell product, release owner or deployment source.
+- The secret-safe file workflow was tested before implementation
+  (missing-module failures) and the full official `npm run check` passed
+  **32/32** Node 22 tests after implementation. Additional regression
+  coverage exposed and then fixed symlinked output root redirection and
+  missing structured rollback-uncertainty results. No real token or
+  production Technitium API was contacted; synthetic values and temporary
+  files were used. The PR is **draft**, not yet upstream CI accepted,
+  reviewed, merged or included in an immutable official release. Token
+  lifecycle, directory trust and concurrent rollback semantics remain
+  explicit security-review gates.
+- **TN-P02** is still Hypershell downstream release/packaging source and
+  requires decomposition into upstream-compatible build fixes versus
+  distribution-specific ownership or exact-scope approved exceptions.
+- **TN-P03** is still a separate security/dependency and CI baseline
+  patch group. Official source is not proven equivalent to the maintained
+  lockfile and workflow. Neither TN-P02 nor TN-P03 has an upstream
+  issue/PR or a valid operator-approved ADR. No new downstream production
+  release is justified by the TN-P01 draft PR.
 
 ## Upstream-first exit
 
