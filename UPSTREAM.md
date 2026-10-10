@@ -30,10 +30,11 @@ This is a source-history-based initial logical patch inventory and must be recon
     {
       "id": "TN-P02",
       "kind": "upstream",
-      "scope": "Downstream distribution and release packaging",
+      "scope": "Downstream-only image/release packaging, pinned Docker CI workflow and actions/attest maintenance",
       "local_commits": [
         "3980b01",
-        "3c4fd69"
+        "3c4fd69",
+        "a83b8d7"
       ],
       "checked_on": "2026-10-10",
       "issue": null,
@@ -42,14 +43,14 @@ This is a source-history-based initial logical patch inventory and must be recon
     {
       "id": "TN-P03",
       "kind": "upstream",
-      "scope": "Vulnerable transitive dependency and Actions baseline maintenance",
+      "scope": "Generic transitive dependency security and lockfile version baseline refresh",
       "local_commits": [
-        "29cf12c",
-        "a83b8d7"
+        "29cf12c"
       ],
       "checked_on": "2026-10-10",
-      "issue": null,
-      "pr": null
+      "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/4",
+      "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/5",
+      "pr_state": "draft"
     }
   ]
 }
@@ -83,11 +84,22 @@ This is a source-history-based initial logical patch inventory and must be recon
 - **TN-P02** is still Hypershell downstream release/packaging source and
   requires decomposition into upstream-compatible build fixes versus
   distribution-specific ownership or exact-scope approved exceptions.
-- **TN-P03** is still a separate security/dependency and CI baseline
-  patch group. Official source is not proven equivalent to the maintained
-  lockfile and workflow. Neither TN-P02 nor TN-P03 has an upstream
-  issue/PR or a valid operator-approved ADR. No new downstream production
-  release is justified by the TN-P01 draft PR.
+- **TN-P03** is separately linked to upstream
+  [issue #4](https://github.com/Slyke/mcp-technitium-dns/issues/4) and
+  [draft PR #5](https://github.com/Slyke/mcp-technitium-dns/pull/5),
+  exact contribution head `6a86113455d665704bb53a0db52eab72204d2551`.
+  The reviewed lockfile moves `fast-uri` from 3.1.3 to 3.1.8 and
+  `@modelcontextprotocol/sdk` from 1.29.0 to 1.32.1, and aligns root
+  version 0.1.0 to the official package.json value 0.0.1.
+  The new dependency-lock contract was first red then green; a fresh
+  `npm ci` and the full official `npm run check` passed against the
+  upstream-native candidate. This is a **draft**, not an accepted
+  upstream security audit, CI result, merge or immutable release inclusion.
+  The Actions attest bump in downstream commit `a83b8d7` only changes
+  the Hypershell-owned `.github/workflows/release.yml`, not upstream
+  dependencies: its ownership has been corrected to **TN-P02**.
+  TN-P02 remains unlinked/unapproved, and no downstream production
+  release is justified by either draft PR.
 
 ## Upstream-first exit
 
