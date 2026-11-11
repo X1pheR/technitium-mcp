@@ -22,23 +22,27 @@ This is a source-history-based initial logical patch inventory and must be recon
       "local_commits": [
         "896ae28"
       ],
-      "checked_on": "2026-10-10",
+      "checked_on": "2026-11-11",
       "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/2",
       "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/3",
       "pr_state": "draft"
     },
     {
       "id": "TN-P02",
-      "kind": "upstream",
-      "scope": "Downstream-only image/release packaging, pinned Docker CI workflow and actions/attest maintenance",
+      "kind": "distribution",
+      "scope": "Temporary X1pheR image version and publication/release workflow needed to distribute TN-P01 and TN-P03 until official upstream artifacts include the fixes",
       "local_commits": [
         "3980b01",
         "3c4fd69",
         "a83b8d7"
       ],
-      "checked_on": "2026-10-10",
-      "issue": null,
-      "pr": null
+      "checked_on": "2026-11-11",
+      "temporary": true,
+      "depends_on": [
+        "TN-P01",
+        "TN-P03"
+      ],
+      "exit_when": "A suitable official upstream artifact contains TN-P01 and TN-P03, and verified token/dependency behavior plus consumer, source and rollback parity permits removing the own image/tag/release workflow."
     },
     {
       "id": "TN-P03",
@@ -47,7 +51,7 @@ This is a source-history-based initial logical patch inventory and must be recon
       "local_commits": [
         "29cf12c"
       ],
-      "checked_on": "2026-10-10",
+      "checked_on": "2026-11-11",
       "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/4",
       "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/5",
       "pr_state": "draft"
@@ -81,9 +85,7 @@ This is a source-history-based initial logical patch inventory and must be recon
   reviewed, merged or included in an immutable official release. Token
   lifecycle, directory trust and concurrent rollback semantics remain
   explicit security-review gates.
-- **TN-P02** is still Hypershell downstream release/packaging source and
-  requires decomposition into upstream-compatible build fixes versus
-  distribution-specific ownership or exact-scope approved exceptions.
+- **TN-P02** is the temporary release-only distribution record for linked upstream fixes TN-P01 and TN-P03; unrelated generic source/build changes are not covered by it.
 - **TN-P03** is separately linked to upstream
   [issue #4](https://github.com/Slyke/mcp-technitium-dns/issues/4) and
   [draft PR #5](https://github.com/Slyke/mcp-technitium-dns/pull/5),
@@ -98,22 +100,13 @@ This is a source-history-based initial logical patch inventory and must be recon
   The Actions attest bump in downstream commit `a83b8d7` only changes
   the Hypershell-owned `.github/workflows/release.yml`, not upstream
   dependencies: its ownership has been corrected to **TN-P02**.
-  TN-P02 remains unlinked/unapproved, and no downstream production
-  release is justified by either draft PR.
+  TN-P02 distribution is linked to both draft upstream patches. No downstream production release is justified solely by their open PRs.
 
 ## Upstream-first exit
 
 For each patch, first check whether the official current upstream source or an existing issue and PR already cover its behavior. Do not open duplicate contributions. Preserve one logical patch for an iterative fix. Publish only a tested upstream-compatible contribution after the repository's established acceptance gates. Once the exact patch merges, require inclusion in an immutable official release and candidate regression evidence before removing the downstream delta. An approved intentional divergence requires a separate operator decision and accepted exact-scope product ADR. End fork maintenance only after release adoption, desired state, rollback readiness, live acceptance and explicit retirement gates. No automatic production or database migration is authorized by this register.
 
 
-## Unapproved distribution disposition proposal — TN-P02
+## Temporary distribution exit — TN-P02
 
-This is a proposal for an operator decision, not an approved ADR or a conformance exception. The register row remains unlinked and nonconformant. Exact source candidate: `33343b574963427fcc94b3b8f1dcd4caea6fc0ce`; mapped historical commits: `3980b01`, `3c4fd69`, `a83b8d7`. Initial/import commits can contain baseline and unrelated application files; approval must not cover the entire mapped commit merely because it appears in this row.
-
-Proposed narrow scope: Only product identity, Docker/runtime packaging, canonical source verifier, repository security automation and owned release/attestation wrappers. The initial import includes upstream application source; it does not grant an exception for that source or for secret-handling and dependency patches TN-P01/P03.
-
-Requested decision: retain this precisely bounded product-owned distribution adapter, or move/remove it through the existing source/release/deployment owners when the upstream artifact supplies an equivalent accepted distribution. Our package names, registry targets and operator release controls do not constitute a useful upstream feature request; do not manufacture an issue/PR asking upstream to adopt downstream ownership. Any reusable application or verification improvement discovered in this history still needs its own tested upstream-compatible contribution.
-
-Before an approved disposition can clear a gate, the operator-owned product ADR must identify the exact retained scope, rationale, owner, acceptance evidence and review/exit trigger. Proposed review trigger: the next suitable official upstream release or2026-11-14, whichever comes first. Exit requires equivalent released functionality and distribution, accepted source/runtime/consumer parity, rollback readiness and the existing explicit production/retirement acceptance. This proposal authorizes none of those transitions and approves no missing contribution.
-
-The existing shared repository/release lifecycle invokes the single canonical SDLC checker before managed tag/publication/recovery transitions. Direct public workflow integration remains incomplete: the checker source is private and repository-scoped public GitHub tokens cannot read it. No production credentials, privileged public runner, second checker or extra service was introduced.
+The own image/version and release workflow are temporary distribution for the still-pending upstream source fixes. Secret-handling and dependency changes remain independent upstream patches; canonical verifier and CI security checks remain ordinary product-owned checks, not exempt source patches. Remove own distribution only after official upstream artifact and separately accepted consumer/rollback parity. No release or deployment is authorized.
