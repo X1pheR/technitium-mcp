@@ -30,19 +30,21 @@ This is a source-history-based initial logical patch inventory and must be recon
     {
       "id": "TN-P02",
       "kind": "distribution",
-      "scope": "Temporary X1pheR image version and publication/release workflow needed to distribute TN-P01 and TN-P03 until official upstream artifacts include the fixes",
+      "scope": "Temporary own version/image publication and narrowly pinned runtime OS packages required to safely distribute retained unreleased upstream source fixes",
       "local_commits": [
         "3980b01",
         "3c4fd69",
-        "a83b8d7"
+        "a83b8d7",
+        "ae56011f14b3e2e37e1ae9a9f6a854be3e95762d"
       ],
       "checked_on": "2026-11-11",
       "temporary": true,
       "depends_on": [
         "TN-P01",
-        "TN-P03"
+        "TN-P03",
+        "TN-P04"
       ],
-      "exit_when": "A suitable official upstream artifact contains TN-P01 and TN-P03, and verified token/dependency behavior plus consumer, source and rollback parity permits removing the own image/tag/release workflow."
+      "exit_when": "A suitable official upstream artifact includes TN-P01, TN-P03 and TN-P04, an accepted fixed base image no longer requires the temporary OS pins, and source, consumer and rollback parity permit retiring the own image/tag/release workflow."
     },
     {
       "id": "TN-P03",
@@ -55,6 +57,18 @@ This is a source-history-based initial logical patch inventory and must be recon
       "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/4",
       "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/5",
       "pr_state": "draft"
+    },
+    {
+      "id": "TN-P04",
+      "kind": "upstream",
+      "scope": "Patch Zod 4 and security-sensitive transitive npm dependency locks",
+      "local_commits": [
+        "1d7788e09636347d1694c0c8d1384d016654aae1"
+      ],
+      "checked_on": "2026-11-11",
+      "issue": "https://github.com/Slyke/mcp-technitium-dns/issues/6",
+      "pr": "https://github.com/Slyke/mcp-technitium-dns/pull/7",
+      "pr_state": "open"
     }
   ]
 }
