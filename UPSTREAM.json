@@ -6,6 +6,7 @@
   "application_source_delta": true,
   "downstream_delta": [
     "upstream/package-lock.json",
+    "upstream/package.json",
     "upstream/src/config.js",
     "upstream/src/extraValidators.js",
     "upstream/src/secretFile.js",
