@@ -14,6 +14,7 @@ LABEL org.opencontainers.image.title="Technitium DNS MCP — X1pheR Distribution
       org.opencontainers.image.revision="${REVISION}" \
       org.opencontainers.image.licenses="MIT"
 RUN apk add --no-cache libcrypto3=3.5.8-r0 libssl3=3.5.8-r0 \
+    musl=1.2.6-r3 musl-utils=1.2.6-r3 zlib=1.4-r0 \
     && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
